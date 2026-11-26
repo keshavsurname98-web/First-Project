@@ -20,4 +20,3 @@ Design and motion
 - Keep the animated Galaxy website backdrop separate from the starfield inside the game. Give each a toggle.
 - Use TechText for the main headings, a subtle Magnet effect on primary buttons, and AnimatedContent-style entrances for the intro and guide. Preserve fixed click targets and respect reduced motion.
 - Use fixed physics time steps and interpolate rendered positions for smooth orbital motion. Give launches and checkpoint hits brief visual feedback.
-
