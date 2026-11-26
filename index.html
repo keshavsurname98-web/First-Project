@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1016">
+  <meta name="description" content="Launch planets and experiment with gravity in an interactive orbital sandbox.">
+  <title>Orbit Lab — Gravity Sandbox</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="galaxy.js" defer></script>
+  <script src="starfield.js" defer></script>
+  <script src="tech-text.js" defer></script>
+  <script src="magnet.js" defer></script>
+  <script src="animated-content.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <div class="website-background" aria-hidden="true">
+    <canvas id="galaxy-background"></canvas>
+  </div>
+  <header class="site-header">
+    <div class="shell masthead">
+      <a class="wordmark" href="index.html"><span class="orbit-mark" aria-hidden="true"></span>Orbit Lab</a>
+      <div class="header-controls">
+        <label class="galaxy-toggle"><input id="galaxy-toggle" type="checkbox" checked> Galaxy background</label>
+        <a class="help-link" href="#guide">How to play</a>
+      </div>
+    </div>
+  </header>
+  <main class="shell">
+    <section class="intro" aria-labelledby="title">
+      <div>
+        <h1 id="title" class="hero-title">
+          <span id="title-text">Gravity Sandbox</span>
+          <span id="title-effect" class="tech-text" aria-hidden="true"><canvas class="tech-text-canvas"></canvas></span>
+        </h1>
+        <p id="intro-copy" data-animated-content="mount">Launch a planet and see where gravity takes it.</p>
+      </div>
+      <div class="mode-switch" role="group" aria-label="Game mode">
+        <button id="sandbox-mode" class="magnet-button" type="button" aria-pressed="true" data-magnet="3"><span class="magnet-surface">Sandbox</span></button>
+        <button id="mission-mode" class="magnet-button" type="button" aria-pressed="false" data-magnet="3"><span class="magnet-surface">Flight School</span></button>
+      </div>
+    </section>
+    <section class="lab" aria-label="Gravity simulation">
+      <div class="instrument">
+        <div class="instrument-heading">
+          <h2>Orbital field</h2>
+          <span class="simulation-state"><span class="state-dot" aria-hidden="true"></span><span id="state">Paused</span></span>
+        </div>
+        <div class="field">
+          <canvas id="starfield" aria-hidden="true"></canvas>
+          <canvas id="field-grid" aria-hidden="true"></canvas>
+          <canvas id="field" tabindex="0" aria-label="Orbital field" aria-describedby="field-help">This simulation requires canvas support.</canvas>
+          <span class="field-corner corner-top" aria-hidden="true"></span>
+          <span class="field-corner corner-bottom" aria-hidden="true"></span>
+        </div>
+        <div class="instrument-footer">
+          <p id="field-help">Drag in the field to aim and launch</p>
+          <span class="counter"><span id="count">0</span> in flight</span>
+        </div>
+      </div>
+      <aside class="controls" aria-label="Simulation controls">
+        <div class="control-group" id="sandbox-settings">
+          <label for="preset">Starting system</label>
+          <span class="select-wrap">
+            <select id="preset">
+              <option value="orbits">Stable orbits</option>
+              <option value="flyby">Close flyby</option>
+              <option value="collision">Collision course</option>
+              <option value="empty">Empty field</option>
+            </select>
+          </span>
+          <p class="preset-description" id="preset-description"></p>
+          <label class="gravity-setting" for="gravity">Star gravity</label>
+          <span class="select-wrap">
+            <select id="gravity">
+              <option value="0.5">Light · 0.5×</option>
+              <option value="1" selected>Standard · 1×</option>
+              <option value="1.5">Heavy · 1.5×</option>
+              <option value="2">Extreme · 2×</option>
+            </select>
+          </span>
+        </div>
+        <div class="control-group mission-settings" id="mission-settings" hidden>
+          <label for="course">Flight course</label>
+          <span class="select-wrap">
+            <select id="course">
+              <option value="0">First Orbit</option>
+              <option value="1">Inside Track</option>
+              <option value="2">The Slingshot</option>
+            </select>
+          </span>
+          <p id="course-description" class="preset-description"></p>
+          <div class="mission-progress">
+            <label for="checkpoints">Checkpoints <span id="checkpoint-count"></span></label>
+            <div class="progress-track">
+              <progress id="checkpoints" value="0" max="3"></progress>
+              <span class="progress-fill" aria-hidden="true"></span>
+            </div>
+          </div>
+          <dl class="flight-stats">
+            <div><dt>Attempt</dt><dd id="attempt">—</dd></div>
+            <div><dt>Personal best</dt><dd id="record">—</dd></div>
+            <div><dt id="telemetry-label">Launch speed</dt><dd id="telemetry">—</dd></div>
+          </dl>
+        </div>
+        <div class="actions">
+          <button type="button" class="primary magnet-button" id="play" data-magnet="5"><span id="play-label" class="magnet-surface">Run simulation</span></button>
+          <button type="button" class="secondary" id="reset">Reset</button>
+        </div>
+        <div class="control-group">
+          <label for="speed">Simulation speed <output id="speed-value" for="speed">1×</output></label>
+          <input id="speed" type="range" min="0" max="4" step="1" value="2" aria-valuetext="1 times normal speed">
+          <div class="range-labels" aria-hidden="true"><span>0.25×</span><span>4×</span></div>
+          <label class="trail-toggle"><input id="trails" type="checkbox" checked> Show orbital trails</label>
+          <label class="trail-toggle"><input id="starfield-toggle" type="checkbox" checked> Show starfield</label>
+        </div>
+        <div class="body-section">
+          <h3>Bodies</h3>
+          <ul class="body-list" id="bodies"></ul>
+        </div>
+      </aside>
+    </section>
+    <p class="notice" id="notice" role="status"></p>
+    <section id="guide" class="guide" aria-labelledby="guide-title" data-animated-content="scroll" data-stagger="65">
+      <h2 id="guide-title">How to play</h2>
+      <div>
+        <p><strong>Launch.</strong> Press anywhere away from the star and drag in the direction you want the planet to travel. A longer drag gives it more speed. Click or tap for a launch with orbital speed.</p>
+        <p><strong>Experiment.</strong> Try a different starting system or change the speed to see how each path develops. With a keyboard, focus the field, move the crosshair with the arrow keys, and press Enter to launch at orbital speed. Press Space in the field to pause or resume.</p>
+        <p><strong>Flight School.</strong> Drag from the launch pad to set your heading and speed. Guide the probe through the numbered checkpoints in order. With the field focused, use Left or Right to change heading, Up or Down to change speed, and Enter to launch.</p>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
