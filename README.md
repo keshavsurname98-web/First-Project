@@ -21,4 +21,3 @@ Design and motion
 - Use TechText for the main headings, a subtle Magnet effect on primary buttons, and AnimatedContent-style entrances for the intro and guide. Preserve fixed click targets and respect reduced motion.
 - Use fixed physics time steps and interpolate rendered positions for smooth orbital motion. Give launches and checkpoint hits brief visual feedback.
 
-Finish with a README explaining how to play, run locally, and publish on GitHub Pages. Include the original notices for any adapted components. Verify that Sandbox launches work, all three courses can be completed, and the game is usable on a narrow screen.
